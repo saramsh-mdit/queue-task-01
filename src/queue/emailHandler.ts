@@ -1,15 +1,13 @@
 import fastq, { queueAsPromised } from "fastq";
+import Log from "../utils/logger";
 
 type Task = {
   email: string;
   message?: string;
-  time: number;
 };
 
 async function queueWorker(arg: Task) {
-  setTimeout(() => {
-    console.log(arg.email);
-  }, arg.time * 100);
+  Log.info(arg.email);
 }
 
 export const emailTaskQueue: queueAsPromised<Task> = fastq.promise(

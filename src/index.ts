@@ -1,37 +1,24 @@
+import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import { ConnectToDb } from "./config/dataabse";
-import { emailTaskQueue } from "./utils/queue";
+import { pinoHttp } from "pino-http";
+import pinoPretty from "pino-pretty";
+
+import { connectToDb } from "./config/database";
+import router from "./router";
+import Log from "./utils/logger";
 
 const PORT = process.env.PORT || 3500;
 
 const server = express();
 
-server.get("/", async (req, res) => {
-  const time = Number((Math.random() * 100).toPrecision(2));
-  emailTaskQueue.push({
-    email: `something@${time}email.com`,
-    time,
-  });
-
-  res.send({ message: "Queue is started" });
-});
-
-server.get("/:number", async (req, res) => {
-  const number = Number(req.params.number) || 1;
-  for (let i = 1; i < number; i++) {
-    const time = Number((Math.random() * 100).toPrecision(2));
-
-    emailTaskQueue.push({
-      email: `something@${time}email.com`,
-      time,
-    });
-  }
-
-  res.send({ message: `${number} - Queue is started` });
-});
+// Middlewares
+server.use(router);
+server.use(pinoHttp(pinoPretty({ colorize: true, ignore: "pid,req,res" })));
+server.use(express.urlencoded({ extended: true }));
+server.use(cors());
 
 server.listen(PORT, () => {
-  console.log("Server running at PORT:", PORT);
-  ConnectToDb();
+  Log.info(`Server running at PORT:${PORT}`);
+  connectToDb();
 });
