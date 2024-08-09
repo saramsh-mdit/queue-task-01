@@ -13,7 +13,9 @@ function getSheetFromFile(path: string) {
 function getEmailFromSheet(data: Sheet): string[] {
   const emails: string[] = [];
   data.forEach((page) => {
-    page.data.forEach((email) => emails.push(email[0]));
+    page.data.forEach((email) => {
+      if (email[0]) emails.push(email[0]);
+    });
   });
   return emails;
 }

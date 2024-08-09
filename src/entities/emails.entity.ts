@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseDateEntity } from "../utils/entity";
 import { Users } from "./users.entity";
 
-enum EMAIL_STATUS_ENUM {
+export enum EMAIL_STATUS_ENUM {
   success = "success",
   failed = "failed",
 }

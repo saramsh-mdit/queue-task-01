@@ -1,40 +1,59 @@
 import { Router } from "express";
 import path from "path";
 import { fileUpload } from "../../config/fileUpload";
-import { emailQueue } from "../../queue/emailHandler";
 import { fileQueue } from "../../queue/fileHandler";
+import { generateMessage } from "../../utils/message";
+import emailService from "./email.service";
 
 const EmailController = Router();
 
-EmailController.get("/", (req, res) => {
-  const time = Number((Math.random() * 100).toPrecision(2));
-  emailQueue.push({
-    email: `something@${time}email.com`,
-  });
+EmailController.get("/status", async (req, res) => {
+  try {
+    const response = await emailService.getEmailStatusByUserId(
+      res.locals.user.id
+    );
+    res.send(response);
+  } catch (err) {
+    const errResponse = generateMessage("something went wrong", true);
 
-  res.send({ message: "Queue is started" });
-});
-
-EmailController.get("/:number", (req, res) => {
-  const number = Number(req.params.number) || 1;
-  for (let i = 1; i < number; i++) {
-    const time = Number((Math.random() * 100).toPrecision(2));
-
-    emailQueue.push({
-      email: `something@${time}email.com`,
-    });
+    res.status(500).send(errResponse);
   }
-
-  res.send({ message: `${number} - Queue is started` });
 });
 
-EmailController.post("/bulk", fileUpload.single("file"), async (req, res) => {
-  const emailFilePath = path.join(
-    process.cwd(),
-    `/public/${req.file?.filename}`
-  );
-  fileQueue.push({ fileToProcess: emailFilePath });
-  res.send({ message: "Data is being processed." });
+EmailController.get("/template", async (req, res) => {
+  try {
+    const response = await emailService.getEmailTemplates();
+    res.send(response);
+  } catch (err) {
+    const errResponse = generateMessage("something went wrong", true);
+
+    res.status(500).send(errResponse);
+  }
 });
+
+EmailController.post(
+  "/template/:templateId/bulk",
+  fileUpload.single("file"),
+  async (req, res) => {
+    try {
+      const templateId = req.params.templateId;
+      const emailFilePath = path.join(
+        process.cwd(),
+        `/public/${req.file?.filename}`
+      );
+      const template = await emailService.getEmailTemplateById(templateId);
+      fileQueue.push({
+        fileToProcess: emailFilePath,
+        text: template?.text,
+        title: template?.title,
+        sender_id: res.locals.user.id,
+      });
+      res.send({ message: "Data is being processed." });
+    } catch (err) {
+      const errResponse = generateMessage("something went wrong", true);
+      res.status(500).send(errResponse);
+    }
+  }
+);
 
 export default EmailController;
