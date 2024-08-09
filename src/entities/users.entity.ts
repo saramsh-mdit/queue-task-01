@@ -16,8 +16,8 @@ export class Users extends BaseDateEntity {
   @Column({ type: "text", nullable: true })
   password?: string;
 
-  @Column({ type: "varchar", nullable: true })
-  isVerified?: string;
+  @Column({ type: "bool", nullable: true })
+  isVerified?: boolean = false;
 
   @OneToMany(() => Emails, (email) => email.sender)
   sendEmails?: Emails[];

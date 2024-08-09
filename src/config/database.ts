@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   password: envVariables.POSTGRES_PASSWORD,
   database: envVariables.POSTGRES_DB,
   synchronize: false,
-  logging: false,
+  logging: true,
   entities: [`${path}/entities/*.entity.{ts,js}`],
   migrations: [`${path}/migrations/*.{ts,js}`],
   migrationsTableName: "migrations",
@@ -22,10 +22,8 @@ export const AppDataSource = new DataSource({
 export async function connectToDb() {
   try {
     const success = await AppDataSource.initialize();
-    console.log(`${path}/entities/*.entity.{ts,js}`);
     if (success) Log.info("DB CONNECTION SUCCESSFUL");
   } catch (err) {
-    console.log(err);
     Log.error("DB CONNECTION FAILED");
   }
 }

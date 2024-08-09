@@ -38,6 +38,9 @@ importers:
       node-xlsx:
         specifier: ^0.24.0
         version: 0.24.0
+      nodemailer:
+        specifier: ^6.9.14
+        version: 6.9.14
       pg:
         specifier: ^8.12.0
         version: 8.12.0
@@ -793,6 +796,10 @@ packages:
     resolution: {integrity: sha512-1olwK48XK9nXZsyH/FCltvGrQYvXXZuxVitxXXv2GIuRm51aBi1+5KwR4rWM4KeO61sFU+00913WLZTD+AcXEg==}
     engines: {node: '>=10.0.0'}
     hasBin: true
+
+  nodemailer@6.9.14:
+    resolution: {integrity: sha512-Dobp/ebDKBvz91sbtRKhcznLThrKxKt97GI2FAlAyy+fk19j73Uz3sBXolVtmcXjaorivqsbbbjDY+Jkt4/bQA==}
+    engines: {node: '>=6.0.0'}
 
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
@@ -1919,6 +1926,8 @@ snapshots:
   node-xlsx@0.24.0:
     dependencies:
       xlsx: https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz
+
+  nodemailer@6.9.14: {}
 
   object-assign@4.1.1: {}
 

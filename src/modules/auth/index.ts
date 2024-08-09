@@ -27,19 +27,31 @@ AuthController.post("/login", async (req, res) => {
     const response = await authService.login(parsedData);
     res.send(response);
   } catch (err: any) {
-    let errorResponse = err;
-    res.status(500);
     if (err instanceof ZodError) {
+      const errorResponse = ZodErrorToString(err);
       res.status(400);
-      errorResponse = ZodErrorToString(err);
+      res.send(errorResponse);
     }
-    res.send(errorResponse);
+    res.status(500);
+    res.send(err);
   }
 });
 
 AuthController.get("/me", Authorization, async (req, res) => {
   try {
     const response = res.locals.user;
+    res.send(response);
+  } catch (err: any) {
+    let errorResponse = err;
+    res.status(500);
+    res.send(errorResponse);
+  }
+});
+
+AuthController.get("/verify/:id", async (req, res) => {
+  try {
+    const uid = req.params.id;
+    const response = await authService.verify(uid);
     res.send(response);
   } catch (err: any) {
     let errorResponse = err;
