@@ -1,10 +1,12 @@
 import { Router } from "express";
-import AuthController from "./controllers/auth";
-import EmailController from "./controllers/email";
+import { Authorization } from "./middleware/authorization";
+import AuthController from "./modules/auth";
+import EmailController from "./modules/email";
 
 const router = Router();
 
-router.use("/api/auth", AuthController);
-router.use("/api/email", EmailController);
+router.use("/auth", AuthController);
+// Protected Routes
+router.use("/email", Authorization, EmailController);
 
 export default router;

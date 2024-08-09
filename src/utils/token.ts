@@ -1,9 +1,14 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { envVariables } from "../config/envVariables";
 
 const SALT = envVariables.SALT;
 
-export function getToken(data: object) {
+export type getTokenParam = {
+  id: string;
+};
+export type decodedData = { id: string } & JwtPayload;
+
+export function getToken(data: getTokenParam) {
   return jwt.sign(data, SALT);
 }
 
@@ -12,5 +17,6 @@ export function verifyToken(token: string) {
 }
 
 export function decodeToken(token: string) {
-  return jwt.decode(token);
+  const data = jwt.decode(token);
+  return data as decodedData;
 }

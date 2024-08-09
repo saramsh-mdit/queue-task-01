@@ -13,7 +13,7 @@ export class Users extends BaseDateEntity {
   @Column({ type: "varchar", nullable: true })
   email?: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   password?: string;
 
   @Column({ type: "varchar", nullable: true })
