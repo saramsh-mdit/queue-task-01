@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
+import { envVariables } from "../config/envVariables";
 
-const SALT = process.env.SALT || "SALT";
+const SALT = envVariables.SALT;
 
 export function getToken(data: object) {
   return jwt.sign(data, SALT);

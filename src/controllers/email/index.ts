@@ -1,14 +1,14 @@
 import { Router } from "express";
 import path from "path";
 import { fileUpload } from "../../config/fileUpload";
-import { emailTaskQueue } from "../../queue/emailHandler";
-import { fileTaskQueue } from "../../queue/fileHandler";
+import { emailQueue } from "../../queue/emailHandler";
+import { fileQueue } from "../../queue/fileHandler";
 
 const EmailController = Router();
 
 EmailController.get("/", async (req, res) => {
   const time = Number((Math.random() * 100).toPrecision(2));
-  emailTaskQueue.push({
+  emailQueue.push({
     email: `something@${time}email.com`,
   });
 
@@ -20,7 +20,7 @@ EmailController.get("/:number", async (req, res) => {
   for (let i = 1; i < number; i++) {
     const time = Number((Math.random() * 100).toPrecision(2));
 
-    emailTaskQueue.push({
+    emailQueue.push({
       email: `something@${time}email.com`,
     });
   }
@@ -33,7 +33,7 @@ EmailController.post("/bulk", fileUpload.single("file"), async (req, res) => {
     process.cwd(),
     `/public/${req.file?.filename}`
   );
-  fileTaskQueue.push({ fileToProcess: emailFilePath });
+  fileQueue.push({ fileToProcess: emailFilePath });
   res.send({ message: "Data is being processed." });
 });
 

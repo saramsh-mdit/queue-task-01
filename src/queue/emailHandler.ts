@@ -10,7 +10,4 @@ async function queueWorker(arg: Task) {
   Log.info(arg.email);
 }
 
-export const emailTaskQueue: queueAsPromised<Task> = fastq.promise(
-  queueWorker,
-  1
-);
+export const emailQueue: queueAsPromised<Task> = fastq.promise(queueWorker, 1);
