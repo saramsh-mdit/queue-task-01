@@ -1,8 +1,7 @@
+import "reflect-metadata";
 import { DataSource } from "typeorm";
 import Log from "../utils/logger";
 import { envVariables } from "./envVariables";
-
-const path = `${process.cwd()}${envVariables.PRODUCTION ? "/dist" : "/src"}`;
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -12,9 +11,9 @@ export const AppDataSource = new DataSource({
   password: envVariables.POSTGRES_PASSWORD,
   database: envVariables.POSTGRES_DB,
   synchronize: false,
-  logging: true,
-  entities: [`${path}/entities/*.entity.{ts,js}`],
-  migrations: [`${path}/migrations/*.{ts,js}`],
+  logging: false,
+  entities: [__dirname + `/../entities/*.entity.{ts,js}`],
+  migrations: [__dirname + `/../migrations/*.{ts,js}`],
   migrationsTableName: "migrations",
   migrationsRun: false,
 });

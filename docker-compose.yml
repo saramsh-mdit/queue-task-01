@@ -9,9 +9,8 @@ services:
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydatabase
     ports:
-      - "5432:5432" # Expose the PostgreSQL port on the host
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data # Persist data between container restarts
-
+      - pgdata:/var/lib/postgresql/data
 volumes:
   pgdata:

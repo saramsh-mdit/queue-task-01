@@ -40,15 +40,14 @@ server.use(pinoHttp(pinoPretty({ colorize: true, ignore: "pid,req,res" })));
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 // SERVER STATIC FILE
-server.use(express.static(path.join(rootPath, "dist")));
+server.use(express.static(path.join(rootPath, "client")));
 
 server.use("/api/", limiter);
 server.use("/api", router);
 
 server.get("*", (req, res) => {
-  const spath = path.join(rootPath, "dist", `index.html`);
-  console.log(spath);
-  res.sendFile(spath);
+  const client = path.join(rootPath, "client", `index.html`);
+  res.sendFile(client);
 });
 
 // error handler
