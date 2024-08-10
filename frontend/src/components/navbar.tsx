@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../context/authContext";
 
 export type NavItem = {
   name: string;
@@ -27,13 +29,16 @@ const NavItem = ({ name, link }: NavItem) => (
 );
 
 const Navbar = () => {
+  const { value } = useContext(AuthContext);
   return (
-    <nav className="bg-gray-900 flex gap-4 justify-between p-2 px-4 sticky top-0">
+    <nav className="bg-gray-900 flex gap-4 justify-between p-2 px-8 sticky top-0">
       <NavItem name="Email_Processor" link="/" />
 
-      <div className="flex gap-4">
+      {value?.isAuthorized ? (
+        <NavItem name={value?.userData?.name || "Profile"} link="/profile" />
+      ) : (
         <NavItem name="Login" link="/login" />
-      </div>
+      )}
     </nav>
   );
 };

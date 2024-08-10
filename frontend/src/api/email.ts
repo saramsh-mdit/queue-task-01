@@ -1,11 +1,22 @@
 import { axiosInstanceAuth } from "../config/axios";
 
-export function getEmailTemplates() {
-  return axiosInstanceAuth.get("/email/template");
+export interface TemplateType {
+  _id: string;
+  title: string;
+  text: string;
 }
 
+export function getEmailTemplates() {
+  return axiosInstanceAuth.get<TemplateType[]>("/email/template");
+}
+export interface EmailStatusItem {
+  status: string;
+  createdDate: Date;
+  _id: string;
+  email: string;
+}
 export function getEmailStatus() {
-  return axiosInstanceAuth.get("/email/email-status");
+  return axiosInstanceAuth.get<EmailStatusItem[]>("/email/status");
 }
 
 export function postBulkEmail(template_id: string, file: Blob) {

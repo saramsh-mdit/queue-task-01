@@ -9,6 +9,6 @@ export const axiosInstance = axios.create({
 export const axiosInstanceAuth = axios.create({
   baseURL: apiUrl,
   headers: {
-    Authorization: localStorage.get("token"),
+    Authorization: localStorage?.getItem("token"),
   },
 });

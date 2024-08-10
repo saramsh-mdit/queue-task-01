@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layout/main";
-import ProtectedLayout from "../layout/protected";
-import EmailStatusPage from "../pages/eStatus";
 import Homepage from "../pages/home";
 
+import ProtectedLayout from "../layout/protected";
+import EMailStatusPage from "../pages/eStatus";
 import LoginPage from "../pages/login";
+import ProfilePage from "../pages/profile";
 import RegisterPage from "../pages/register";
 import Templates from "../pages/templates";
 
@@ -28,19 +29,27 @@ export const router = createBrowserRouter([
 
       {
         path: "profile",
-        element: <ProtectedLayout />,
+        element: (
+          <ProtectedLayout>
+            <ProfilePage />
+          </ProtectedLayout>
+        ),
         children: [
           {
-            path: "",
-            element: <Homepage />,
-          },
-          {
             path: "template",
-            element: <Templates />,
+            element: (
+              <ProtectedLayout>
+                <Templates />
+              </ProtectedLayout>
+            ),
           },
           {
             path: "email-status",
-            element: <EmailStatusPage />,
+            element: (
+              <ProtectedLayout>
+                <EMailStatusPage />
+              </ProtectedLayout>
+            ),
           },
         ],
       },

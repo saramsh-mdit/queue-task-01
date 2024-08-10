@@ -4,34 +4,30 @@ import { AxiosError } from "axios";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
-import { postLogin } from "../../api/auth";
-import { AuthContext } from "../../context/authContext";
+import { Link, useNavigate } from "react-router-dom";
+import { postRegister } from "../../api/auth";
 import FormWrapper from "../../layout/form";
-import { LoginUserSchema, LoginUserSchemaT } from "./schemas";
+import { RegisterUserSchema, RegisterUserSchemaT } from "./schemas";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [visible, setVisible] = React.useState(false);
-  const authContextData = React.useContext(AuthContext);
+  const navigation = useNavigate();
+
   const {
     reset,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginUserSchemaT>({
-    resolver: zodResolver(LoginUserSchema),
+  } = useForm<RegisterUserSchemaT>({
+    resolver: zodResolver(RegisterUserSchema),
   });
 
   const submitMutation = useMutation({
-    mutationFn: postLogin,
+    mutationFn: postRegister,
     onSuccess: (response) => {
-      if (response.data.token) {
-        // @ts-ignore
-        authContextData?.logIn(response.data.token);
-        toast.success("Login Successfully");
-        reset();
-        window.location.pathname = "/profile";
-      }
+      toast.success(response.data.message);
+      reset();
+      navigation("/login");
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
@@ -42,13 +38,18 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginUserSchemaT> = (data) => {
+  const onSubmit: SubmitHandler<RegisterUserSchemaT> = (data) => {
     submitMutation.mutate(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormWrapper title="Login Form">
+      <FormWrapper title="Register Form">
+        <label className="form-item">
+          <span className="label">Name:</span>
+          <input {...register("name")} />
+          {errors.name && <span className="error">{errors.name.message}</span>}
+        </label>
         <label className="form-item">
           <span className="label">Email:</span>
           <input {...register("email")} />
@@ -56,7 +57,7 @@ const LoginForm = () => {
             <span className="error">{errors.email.message}</span>
           )}
         </label>
-        <label className="form-item">
+        <label className="form-item ">
           <span className="label">Password:</span>
           <div className="relative grid">
             <button
@@ -75,13 +76,13 @@ const LoginForm = () => {
             <span className="error">{errors.password.message}</span>
           )}
         </label>
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
         <p className="text-center">
-          Don't have an account? <Link to="/register">Register</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </FormWrapper>
     </form>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

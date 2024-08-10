@@ -18,9 +18,39 @@ input, textarea {
 }
 
 button {
-    @apply p-2 text-white font-semibold bg-gray-800;
+    @apply p-2 px-4 text-white font-semibold bg-gray-700;
+    &:hover{
+        @apply brightness-90;
+    }
+    &:disabled {
+        @apply cursor-not-allowed brightness-100 text-gray-500 opacity-70;
+    }
 }
 
 a {
     @apply font-semibold underline;
+}
+h2 {
+    @apply text-5xl font-bold leading-tight;
+}
+
+table {
+    @apply w-full text-sm text-left rtl:text-right text-gray-800 border ;
+
+    thead {
+        @apply w-full text-sm text-left rtl:text-right text-gray-700 ;
+    }
+    th {
+        @apply px-6 py-2;
+    }
+    td {
+        @apply px-6 py-3;
+    }
+    tr{
+        @apply bg-white border-b;
+    }
+}
+
+.btn-default{
+    @apply text-sm bg-gray-200 text-gray-700;
 }
