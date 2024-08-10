@@ -1,37 +1,68 @@
 import "dotenv/config";
-import express from "express";
-import { ConnectToDb } from "./config/dataabse";
-import { emailTaskQueue } from "./utils/queue";
+import "reflect-metadata";
 
-const PORT = process.env.PORT || 3500;
+import cors from "cors";
+import express from "express";
+import { pinoHttp } from "pino-http";
+import pinoPretty from "pino-pretty";
+
+import rateLimit from "express-rate-limit";
+import path from "path";
+import { connectToDb } from "./config/database";
+import { envVariables } from "./config/envVariables";
+import { errorHandler } from "./middleware/errorHandler";
+import router from "./router";
+import Log from "./utils/logger";
 
 const server = express();
+const PORT = envVariables.PORT || 3500;
+const rootPath = process.cwd();
+console.log(rootPath);
 
-server.get("/", async (req, res) => {
-  const time = Number((Math.random() * 100).toPrecision(2));
-  emailTaskQueue.push({
-    email: `something@${time}email.com`,
-    time,
-  });
-
-  res.send({ message: "Queue is started" });
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 400, // limit each IP requests per window
 });
 
-server.get("/:number", async (req, res) => {
-  const number = Number(req.params.number) || 1;
-  for (let i = 1; i < number; i++) {
-    const time = Number((Math.random() * 100).toPrecision(2));
+// Middlewares
+server.use(
+  cors({
+    allowedHeaders: [
+      "Authorization",
+      "authorization",
+      "content-type",
+      "access-control-allow-headers",
+    ],
+    origin: "*",
+  })
+);
+server.use(pinoHttp(pinoPretty({ colorize: true, ignore: "pid,req,res" })));
+server.use(express.urlencoded({ extended: true }));
+server.use(express.json());
+// SERVER STATIC FILE
+server.use(express.static(path.join(rootPath, "client")));
 
-    emailTaskQueue.push({
-      email: `something@${time}email.com`,
-      time,
+server.use("/api/", limiter);
+server.use("/api", router);
+
+server.get("*", (req, res) => {
+  const client = path.join(rootPath, "client", `index.html`);
+  res.sendFile(client);
+});
+
+// error handler
+server.use(errorHandler);
+
+async function startServer() {
+  try {
+    await connectToDb();
+    server.listen(PORT, () => {
+      Log.info(`Server running at PORT:${PORT}`);
     });
+  } catch (err: any) {
+    Log.error(err?.message);
+    process.exit();
   }
+}
 
-  res.send({ message: `${number} - Queue is started` });
-});
-
-server.listen(PORT, () => {
-  console.log("Server running at PORT:", PORT);
-  ConnectToDb();
-});
+startServer();

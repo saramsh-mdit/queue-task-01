@@ -4,10 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dist/index.js",
+    "start": "node ./build/index.js",
     "dev": "tsx --watch ./src/index.ts",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migration:generate": "npx tsx node_modules/typeorm/cli.js migration:generate -d src/config/database.ts -p src/migrations/migration",
+    "migration:run": "npx tsx node_modules/typeorm/cli.js migration:run -d src/config/database.ts",
+    "migration:revert": "npx tsx node_modules/typeorm/cli.js migration:revert -d src/config/database.ts",
+    "migration:show": "npx tsx node_modules/typeorm/cli.js migration:show -d src/config/database.ts",
+    "seed:data": "tsx ./src/seed-script.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,18 +20,29 @@
   "dependencies": {
     "argon2": "^0.40.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
     "fastq": "^1.17.1",
     "jsonwebtoken": "^9.0.2",
+    "multer": "1.4.5-lts.1",
+    "node-xlsx": "^0.24.0",
+    "nodemailer": "^6.9.14",
     "pg": "^8.12.0",
+    "pino": "^9.3.2",
+    "pino-http": "^10.2.0",
+    "pino-pretty": "^11.2.2",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "dotenv": "^16.4.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/multer": "^1.4.11",
     "@types/node": "^22.1.0",
+    "ts-node": "^10.9.2",
     "tsx": "^4.17.0"
   }
 }
