@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
 
-export function formattedData(date?: Date) {
-  return dayjs(date).format("MMM/DD/YYYY (h:MM A)");
+export function formattedData(date: string) {
+  return dayjs(date).format("MMM/DD/YYYY");
 }

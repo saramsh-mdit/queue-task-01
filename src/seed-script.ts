@@ -1,11 +1,12 @@
-import { AppDataSource } from "../config/database";
-import { Templates } from "../entities/templates.entity";
+import "reflect-metadata";
+
+import { AppDataSource } from "./config/database";
+import { Templates } from "./entities/templates.entity";
 
 const emailTemplates: emailTemplatesT[] = [
   {
     subject: "Welcome Email",
-    text: `
-        Dear [Recipient's Name],
+    text: `Dear [Recipient's Name],
     
     We are thrilled to welcome you to the [Company/Organization Name] team! Your skills and experience will be a great addition to our group, and we are excited to see the positive impact you will have here.
     
@@ -16,8 +17,7 @@ const emailTemplates: emailTemplatesT[] = [
   },
   {
     subject: "Congratulatory Email",
-    text: `
-        Dear [Recipient's Name],
+    text: `Dear [Recipient's Name],
     
     I am writing to extend my heartfelt congratulations on your recent achievement! Your hard work, dedication, and perseverance have truly paid off, and it is wonderful to see you reach this milestone.
     
@@ -28,10 +28,7 @@ const emailTemplates: emailTemplatesT[] = [
   },
   {
     subject: "Visit Offer Email",
-    text: `
-        Dear [Recipient's Name],
-    
-    Dear [Recipient's Name],
+    text: `Dear [Recipient's Name],
     
     I hope this message finds you well.
     
@@ -53,6 +50,7 @@ const TemplateRepo = AppDataSource.getRepository(Templates);
 
 async function seed() {
   try {
+    await AppDataSource.initialize();
     const data = await Promise.all(
       emailTemplates.map(async (template) => {
         const newTemp = new Templates();
@@ -66,3 +64,4 @@ async function seed() {
     console.log(err);
   }
 }
+seed();

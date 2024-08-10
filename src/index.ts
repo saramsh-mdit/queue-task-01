@@ -18,13 +18,19 @@ const PORT = envVariables.PORT || 3500;
 const server = express();
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, // limit each IP to 100 requests per window
+  max: 400, // limit each IP requests per window
 });
 
 // Middlewares
 server.use(
   cors({
-    allowedHeaders: ["Authorization", "authorization"],
+    allowedHeaders: [
+      "Authorization",
+      "authorization",
+      "content-type",
+      "access-control-allow-headers",
+    ],
+    origin: "*",
   })
 );
 server.use(pinoHttp(pinoPretty({ colorize: true, ignore: "pid,req,res" })));

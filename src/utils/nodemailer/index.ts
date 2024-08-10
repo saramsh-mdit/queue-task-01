@@ -24,10 +24,9 @@ export async function sendEmail(props: sendEmailProp) {
   try {
     const info = await transporter.sendMail({
       from: `"Email_Processor" <${envVariables.MAILTRAP_EMAIL}>`,
-      to: props.to, // list of receivers
+      to: props.to,
       subject: props.subject,
       text: props.text,
-      // html: "<b>Hello world?</b>", // html body
     });
     Log.info(info);
     if (info) {

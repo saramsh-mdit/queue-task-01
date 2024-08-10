@@ -24,15 +24,12 @@ async function register(data: RegisterUserSchemaT) {
     text: `http://localhost:3500/api/auth/verify/${newUser._id!}`,
     subject: "verification",
   });
-  return generateMessage(
-    "Successfully Register User. Check email for validation"
-  );
+  return generateMessage("Check email your email for validation.");
 }
 
 async function login(data: LoginUserSchemaT) {
   const user = await UserRepo.findOneBy({
     email: data.email,
-    isVerified: true,
   });
   if (!user) throw generateMessage("User is not registered.", true);
   if (!user.isVerified)
@@ -54,8 +51,19 @@ async function verify(id: string) {
   await UserRepo.save(user);
   return generateMessage("Successfully verified, Now you can login.");
 }
+
+async function getMe(_id: string) {
+  const user = await UserRepo.findOne({
+    select: { name: true, email: true, isVerified: true },
+    where: { _id },
+  });
+  if (!user) throw generateMessage("User is not registered.", true);
+
+  return user;
+}
 export default {
   register,
   login,
   verify,
+  getMe,
 };

@@ -6,9 +6,9 @@ import { emailQueue } from "./emailHandler";
 
 type Task = {
   fileToProcess: string;
-  title?: string;
-  text?: string;
-  sender_id?: string;
+  title: string;
+  text: string;
+  sender_id: string;
 };
 
 async function queueWorker(props: Task) {

@@ -44,11 +44,11 @@ EmailController.post(
       const template = await emailService.getEmailTemplateById(templateId);
       fileQueue.push({
         fileToProcess: emailFilePath,
-        text: template?.text,
-        title: template?.title,
+        text: template?.text!,
+        title: template?.title!,
         sender_id: res.locals.user.id,
       });
-      res.send({ message: "Data is being processed." });
+      res.send({ message: "Success: Emails are being processed." });
     } catch (err) {
       const errResponse = generateMessage("something went wrong", true);
       res.status(500).send(errResponse);

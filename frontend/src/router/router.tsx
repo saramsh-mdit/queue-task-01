@@ -3,6 +3,7 @@ import MainLayout from "../layout/main";
 import Homepage from "../pages/home";
 
 import ProtectedLayout from "../layout/protected";
+import BulkUploadPage from "../pages/bulkUpload";
 import EMailStatusPage from "../pages/eStatus";
 import LoginPage from "../pages/login";
 import ProfilePage from "../pages/profile";
@@ -26,7 +27,16 @@ export const router = createBrowserRouter([
         path: "register",
         element: <RegisterPage />,
       },
-
+      // File Upload Page
+      {
+        path: "profile/template/:templateId",
+        element: (
+          <ProtectedLayout>
+            <BulkUploadPage />
+          </ProtectedLayout>
+        ),
+      },
+      // Protected Routes
       {
         path: "profile",
         element: (
@@ -37,19 +47,12 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "template",
-            element: (
-              <ProtectedLayout>
-                <Templates />
-              </ProtectedLayout>
-            ),
+            element: <Templates />,
           },
+
           {
             path: "email-status",
-            element: (
-              <ProtectedLayout>
-                <EMailStatusPage />
-              </ProtectedLayout>
-            ),
+            element: <EMailStatusPage />,
           },
         ],
       },

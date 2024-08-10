@@ -30,7 +30,7 @@ const LoginForm = () => {
         authContextData?.logIn(response.data.token);
         toast.success("Login Successfully");
         reset();
-        window.location.pathname = "/profile";
+        window.location.href = "/profile";
       }
     },
     onError: (err) => {

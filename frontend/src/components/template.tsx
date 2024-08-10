@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { TemplateType } from "../api/email";
 
 const TemplateCard = ({ _id, text, title }: TemplateType) => {
@@ -12,8 +13,9 @@ const TemplateCard = ({ _id, text, title }: TemplateType) => {
           {text?.slice(0, 400)} ...
         </p>
       </div>
-      <div className="h-full" />
-      <button>Use this template</button>
+      <Link to={`/profile/template/${_id}`}>
+        <button className="w-full">Use this template</button>
+      </Link>
     </div>
   );
 };

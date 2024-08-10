@@ -10,6 +10,7 @@ async function getEmailTemplates() {
     select: {
       _id: true,
       title: true,
+      text: true,
     },
   });
 }
@@ -24,6 +25,9 @@ async function getEmailStatusByUserId(_id: string) {
     },
     where: {
       sender: { _id },
+    },
+    order: {
+      createdDate: "DESC",
     },
   });
 }

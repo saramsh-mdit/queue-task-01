@@ -2,7 +2,7 @@ import React from "react";
 import { EmailStatusItem } from "../api/email";
 import { formattedData } from "../utils/dayjs";
 
-const RANGE_VALUE = 2;
+const RANGE_VALUE = 10;
 
 const EStatusTable = ({ data }: { data: EmailStatusItem[] }) => {
   // Pagination State

@@ -31,15 +31,16 @@ AuthController.post("/login", async (req, res) => {
       const errorResponse = ZodErrorToString(err);
       res.status(400);
       res.send(errorResponse);
+    } else {
+      res.status(500);
+      res.send(err);
     }
-    res.status(500);
-    res.send(err);
   }
 });
 
 AuthController.get("/me", Authorization, async (req, res) => {
   try {
-    const response = res.locals.user;
+    const response = await authService.getMe(res.locals.user.id);
     res.send(response);
   } catch (err: any) {
     let errorResponse = err;

@@ -7,8 +7,8 @@ import { sendEmail } from "../utils/nodemailer";
 type Task = {
   from: Users;
   to: string;
-  title?: string;
-  text?: string;
+  title: string;
+  text: string;
 };
 
 const EmailRepo = AppDataSource.getRepository(Emails);

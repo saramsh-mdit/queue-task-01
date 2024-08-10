@@ -11,7 +11,8 @@
     "migration:generate": "npx tsx node_modules/typeorm/cli.js migration:generate -d src/config/database.ts -p src/migrations/migration",
     "migration:run": "npx tsx node_modules/typeorm/cli.js migration:run -d src/config/database.ts",
     "migration:revert": "npx tsx node_modules/typeorm/cli.js migration:revert -d src/config/database.ts",
-    "migration:show": "npx tsx node_modules/typeorm/cli.js migration:show -d src/config/database.ts"
+    "migration:show": "npx tsx node_modules/typeorm/cli.js migration:show -d src/config/database.ts",
+    "seed:data": "tsx ./src/seed-script.ts"
   },
   "keywords": [],
   "author": "",

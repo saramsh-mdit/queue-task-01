@@ -8,6 +8,8 @@ const EMailStatusPage = () => {
   const eStatusQuery = useQuery({
     queryFn: getEmailStatus,
     queryKey: ["get-email-status"],
+    // refresh every one minute
+    staleTime: 1000 * 60,
   });
   if (eStatusQuery.isLoading) return <Loading />;
   if (eStatusQuery.error)
