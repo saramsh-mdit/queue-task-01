@@ -10,7 +10,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // fetched queries will be valid for 5 min
-      staleTime: 1000 * 60 * 5,
+      refetchInterval: 1000 * 60 * 5,
     },
   },
 });

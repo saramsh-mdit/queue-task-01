@@ -17,19 +17,17 @@ type AuthContextType = {
   logOut?: () => void;
 };
 
-const token = localStorage.getItem("token");
-
 export const AuthContext = React.createContext<AuthContextType>({
   value: {
-    isAuthorized: token ? true : false,
-    isChecking: token ? false : true,
+    isAuthorized: false,
+    isChecking: true,
   },
   logIn: undefined,
   logOut: undefined,
 });
 export function AuthProvider({ children }: PropsWithChildren) {
-  const [isAuthorized, setIsAuthorized] = React.useState(token ? true : false);
-  const [isChecking, setIsChecking] = React.useState(token ? false : true);
+  const [isAuthorized, setIsAuthorized] = React.useState(false);
+  const [isChecking, setIsChecking] = React.useState(true);
   const [userData, setUserData] = React.useState<userData>();
 
   React.useEffect(() => {

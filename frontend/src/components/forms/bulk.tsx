@@ -14,7 +14,7 @@ const BulkEmailForm = ({ id }: { id: string }) => {
     mutationFn: () => postBulkEmail(id, file!),
     onSuccess: (response) => {
       setFile(undefined);
-      navigation("/profile/email-status");
+      navigation("/profile");
       toast.success(response.data.message);
     },
     onError: (err) => {
