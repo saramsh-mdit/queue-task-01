@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.form-item{
+    @apply grid gap-1;
+
+    .label,.error {
+        @apply text-sm leading-tight;
+    }
+    .error {
+        @apply text-red-600;
+    }
+}
+
+input, textarea {
+    @apply border border-solid border-gray-200 p-1 rounded;
+}
+
+button {
+    @apply p-2 text-white font-semibold bg-gray-800;
+}
+
+a {
+    @apply font-semibold underline;
+}
